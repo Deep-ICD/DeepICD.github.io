@@ -1,0 +1,12 @@
+#mainNav .navbar-brand {
+  font-weight: 700;
+  text-transform: capitalize;
+  /*color: #f05f40;*/
+  /*font-family: "Open Sans","Helvetica Neue",Arial,sans-serif;*/
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  color: #fff;
+  background-color: #2b8de7 !important;
+}
+

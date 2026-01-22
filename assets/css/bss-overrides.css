@@ -1,0 +1,12 @@
+:root, [data-bs-theme=light] {
+  --bs-link-color: #0d6efd;
+  --bs-link-color-rgb: 13,110,253;
+  --bs-link-hover-color: #0a58ca;
+  --bs-link-hover-color-rgb: 10,88,202;
+  --bs-link-decoration: none;
+}
+
+a {
+  text-decoration: var(--bs-link-decoration);
+}
+
