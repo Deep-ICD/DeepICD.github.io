@@ -12,19 +12,20 @@ const partners = [
     width: 1767,
     height: 375,
   },
-  {
-    name: "Research Software Group Southampton",
-    href: "https://rsgsoton.net/",
-    src: "/partner-rsg.png",
-    width: 446,
-    height: 132,
-  },
+
   {
     name: "NHS University Hospital Southampton",
     href: "https://www.uhs.nhs.uk/",
     src: "/partner-nhs.jpg",
     width: 293,
     height: 118,
+  },
+  {
+    name: "Research Software Group Southampton",
+    href: "https://rsgsoton.net/",
+    src: "/partner-rsg.png",
+    width: 446,
+    height: 132,
   },
   {
     name: "Decision Analysis Services",
@@ -291,7 +292,7 @@ function Footer() {
             height={1681}
             className="h-9 w-auto"
           />
-          <p className="mt-4 text-sm leading-relaxed text-body">
+          <p className="mt-6 text-sm leading-relaxed text-body">
             A research project using phase-space reconstruction and machine
             learning to predict peak ratios in ECG traces.
           </p>
