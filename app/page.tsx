@@ -151,10 +151,11 @@ function Hero() {
 
         <div className="mt-10 flex justify-center">
           <a
-            href={LOGIN_URL}
-            className="inline-flex items-center gap-2 rounded-full bg-brand px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition-all hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            // href={LOGIN_URL}
+            href="#"
+            className="inline-flex items-center gap-2 rounded-full bg-[#F97316] px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#F97316]/25 transition-all hover:-translate-y-0.5 hover:bg-[#ea580c] hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F97316]"
           >
-            Log in
+            Request Access
             <ArrowRight className="size-4" strokeWidth={2} />
           </a>
         </div>
