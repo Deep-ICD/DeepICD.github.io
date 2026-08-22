@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 import Overview from "./components/Overview";
 
 const LOGIN_URL = "https://deep-icd.soton.ac.uk/accounts/login/";
@@ -169,18 +168,6 @@ function Hero() {
             A research project using AI to improve ICD eligibility screening
             through ECG analysis.
           </p>
-
-          <div className="mt-10">
-            <a
-              // TODO: no request-access destination exists yet; LOGIN_URL is the
-              // sign-in page, not a request form.
-              href="#"
-              className="inline-flex items-center gap-2 rounded-full bg-brand px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand/20 transition-all hover:-translate-y-0.5 hover:bg-brand-dark hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-            >
-              Request access
-              <ArrowRight className="size-4" strokeWidth={2} />
-            </a>
-          </div>
         </div>
       </div>
     </section>
