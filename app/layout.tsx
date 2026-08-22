@@ -11,7 +11,7 @@ const notoSans = Noto_Sans({
 export const metadata: Metadata = {
   title: "Deep-ICD",
   description:
-    "Deep-ICD is a research project investigating the use of phase space reconstruction (PSR) and machine learning to predict peak ratios of ECG traces.",
+    "A research project using AI to improve ICD eligibility screening through ECG analysis.",
 };
 
 export default function RootLayout({

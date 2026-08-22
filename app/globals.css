@@ -1,13 +1,20 @@
 @import "tailwindcss";
 
+/* Dark-first palette. The wordmark ships as a light-on-transparent PNG, so a
+   dark ground isn't a preference here — it's what the asset requires. */
 @theme {
-  --color-brand: #1668e3;
-  --color-brand-dark: #0f52b8;
-  --color-ink: #16202c;
-  --color-body: #64748b;
-  --color-sky: #e6f0fd;
-  --color-sky-soft: #b9d4fa;
-  --color-hairline: #e2e8f0;
+  --color-brand: #3b82f6;
+  --color-brand-dark: #2563eb;
+
+  --color-surface: #0b1420;
+  --color-raised: #111d2c;
+  /* Light band behind the partner marks, which are dark-ink PNGs plus one
+     opaque JPG and so cannot sit on the dark ground. */
+  --color-panel: #dce2e9;
+
+  --color-ink: #e9eff7;
+  --color-body: #93a3b8;
+  --color-hairline: #1c2a3c;
 }
 
 /* `inline` is required when a theme value references another custom property —
@@ -18,7 +25,7 @@
 }
 
 body {
-  background: #ffffff;
+  background: var(--color-surface);
   color: var(--color-body);
   font-family: var(--font-sans);
 }
