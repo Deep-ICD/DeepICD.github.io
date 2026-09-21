@@ -39,7 +39,18 @@ const partners = [
 /* `href` is each member's institutional or professional profile. It is the only
    link we render: the previous per-member Facebook/GitHub/LinkedIn row pointed
    every icon at "#" regardless of whether the account existed. */
-const team = [
+type TeamMember = {
+  name: string;
+  initials: string;
+  photo: string;
+  role: string;
+  institution: string;
+  href: string;
+  /* Overrides the default portrait crop when a source photo is not centred. */
+  objectPosition?: string;
+};
+
+const team: TeamMember[] = [
   {
     name: "Prof Alain Zemkoho",
     initials: "AZ",
@@ -83,7 +94,7 @@ const team = [
   {
     name: "Dr Lin-Thiri Toon",
     initials: "LT",
-    photo: "/Thiri-Lin.avif",
+    photo: "/Lin Thirin Toon.jpg",
     role: "Clinical researcher",
     institution: "University Hospital Southampton",
     href: "https://www.linkedin.com/in/lin-thiri-toon-26b381149/",
@@ -91,11 +102,9 @@ const team = [
   {
     name: "Dr Anthony Dunn",
     initials: "AD",
-    photo: "/dunn_anthony_2.jpg.webp",
+    photo: "/Anthony Dunn.jpg",
     role: "Industrial partner",
     institution: "Decision Analysis Services",
-    // Portrait source is 2:3 rather than square, so it needs a higher crop.
-    objectPosition: "50% 15%",
     href: "https://www.linkedin.com/in/anthony-dunn-ab093a234/",
   },
 ];
@@ -127,29 +136,38 @@ function Navbar() {
 function Hero() {
   return (
     <section className="relative overflow-hidden bg-surface">
-      {/* The trace sits in the right third of the source image, so it is
-          anchored right: cropping then eats the empty left side rather than
+      {/* The hero's height comes from the copy, so it is fixed at ~595px while
+          `cover` scales the art to the box width. Past 1920px that magnifies
+          the trace until its peak and trough fall outside the band -- so the
+          box stops widening there and an ultrawide gets surface to the left of
+          it instead. The trace sits in the right third of the source, so the
+          box is anchored right: cropping eats the empty left side rather than
           the artwork. */}
-      <Image
-        src="/ecg_right_side.png"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-right"
-      />
+      <div className="absolute inset-y-0 right-0 w-full max-w-[1920px]">
+        <Image
+          src="/ecg_right_side.png"
+          alt=""
+          fill
+          priority
+          sizes="(min-width: 1920px) 1920px, 100vw"
+          className="object-cover object-right"
+        />
 
-      {/* Below lg the copy runs full-width across the trace, so it needs a flat
-          scrim. From lg the copy is confined to the left column and the scrim
-          becomes a gradient that clears the artwork entirely. */}
-      <div className="absolute inset-0 bg-surface/85 lg:hidden" />
-      <div
-        className="absolute inset-0 hidden lg:block"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, var(--color-surface) 0%, var(--color-surface) 38%, color-mix(in oklab, var(--color-surface) 55%, transparent) 62%, transparent 88%)",
-        }}
-      />
+        {/* Below lg the copy runs full-width across the trace, so it needs a
+            flat scrim. From lg the copy is confined to the left column and the
+            scrim becomes a gradient that clears the artwork entirely. Both sit
+            inside the box so they stay registered to the art at any width; the
+            gradient starts on opaque surface, so its left edge meets the
+            section's own surface seamlessly. */}
+        <div className="absolute inset-0 bg-surface/85 lg:hidden" />
+        <div
+          className="absolute inset-0 hidden lg:block"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, var(--color-surface) 0%, var(--color-surface) 38%, color-mix(in oklab, var(--color-surface) 55%, transparent) 62%, transparent 88%)",
+          }}
+        />
+      </div>
 
       {/* Seam into the section below. */}
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-surface" />
@@ -176,25 +194,27 @@ function Hero() {
 
 function Partners() {
   return (
-    /* Light band: the partner marks are dark-ink PNGs plus one opaque JPG, so
-       they cannot sit on the dark ground and are not ours to recolour. */
-    <section className="bg-panel">
-      <div className="mx-auto max-w-6xl px-6 py-16">
-        <div className="grid grid-cols-2 items-center justify-items-center gap-x-8 gap-y-10 sm:grid-cols-4">
+    /* The marks stay on a light ground -- Southampton's is solid dark teal and
+       the DAS wordmark is part charcoal, so neither survives the dark surface,
+       and none of them are ours to recolour. Confining that light to a tile per
+       logo keeps them legible without a full-bleed band cutting the page. */
+    <section className="border-t border-hairline bg-surface">
+      <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {partners.map((partner) => (
             <a
               key={partner.name}
               href={partner.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-opacity hover:opacity-70"
+              className="flex h-20 items-center justify-center rounded-xl bg-panel px-5 transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
             >
               <Image
                 src={partner.src}
                 alt={partner.name}
                 width={partner.width}
                 height={partner.height}
-                className="h-9 w-auto max-w-full object-contain sm:h-10"
+                className="h-8 w-auto max-w-full object-contain sm:h-9"
               />
             </a>
           ))}
@@ -296,9 +316,9 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Partners />
       <Overview />
       <Team />
+      <Partners />
       <Footer />
     </>
   );

@@ -8,8 +8,9 @@
 
   --color-surface: #0b1420;
   --color-raised: #111d2c;
-  /* Light band behind the partner marks, which are dark-ink PNGs plus one
-     opaque JPG and so cannot sit on the dark ground. */
+  /* Light tile behind each partner mark. They are dark-ink PNGs plus one
+     opaque JPG, so they cannot sit on the dark ground; the tiles keep that
+     light contained rather than running it across the full width. */
   --color-panel: #dce2e9;
 
   --color-ink: #e9eff7;
