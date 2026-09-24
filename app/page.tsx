@@ -8,7 +8,7 @@ const partners = [
   {
     name: "University of Southampton School of Mathematical Sciences",
     href: "https://www.southampton.ac.uk/about/faculties-schools-departments/school-of-mathematical-sciences",
-    src: "/partner-southampton.png",
+    src: "/partner-southampton-white.png",
     width: 1767,
     height: 375,
   },
@@ -30,7 +30,7 @@ const partners = [
   {
     name: "Decision Analysis Services",
     href: "https://www.das-int.com/",
-    src: "/partner-das.png",
+    src: "/partner-das-white.png",
     width: 1090,
     height: 242,
   },
@@ -194,30 +194,57 @@ function Hero() {
 
 function Partners() {
   return (
-    /* The marks stay on a light ground -- Southampton's is solid dark teal and
-       the DAS wordmark is part charcoal, so neither survives the dark surface,
-       and none of them are ours to recolour. Confining that light to a tile per
-       logo keeps them legible without a full-bleed band cutting the page. */
+    /* No tile behind the marks: all four now sit straight on the surface.
+
+       That needs artwork that survives a dark ground, which two of them did
+       not. partner-southampton-white.png and partner-das-white.png are
+       REVERSED VARIANTS DERIVED IN HOUSE from the supplied files, pending
+       official artwork from each partner:
+         - Southampton is a single-colour mark, so the reverse is exact: the
+           alpha channel is untouched and the teal is filled white.
+         - DAS is multicolour. Only its neutral dark ink ("services", 1.22:1 on
+           the surface) is flipped to white; the brand red and the grey link
+           glyph are untouched, both of which already clear 3:1.
+       Swap both for the partners' own reversed files when they arrive.
+
+       NHS is unchanged: the mark is a solid blue lozenge with the letters
+       reversed out, so it carries its own ground and needs no help. Note its
+       identity guidelines are strict about the logo never being reversed and
+       about dark backgrounds -- worth confirming this placement with UHS. */
     <section className="border-t border-hairline bg-surface">
       <div className="mx-auto max-w-6xl px-6 py-20">
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {partners.map((partner) => (
-            <a
-              key={partner.name}
-              href={partner.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-20 items-center justify-center rounded-xl bg-panel px-5 transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-            >
-              <Image
-                src={partner.src}
-                alt={partner.name}
-                width={partner.width}
-                height={partner.height}
-                className="h-8 w-auto max-w-full object-contain sm:h-9"
-              />
-            </a>
-          ))}
+        {/* The label sits beside the marks rather than above them, centred
+            against the full two-row block so it reads as one unit with them.
+            Below lg there is no room for a side column, so it stacks back on
+            top and aligns left with the grid beneath it. */}
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
+          <h2 className="shrink-0 text-sm font-semibold uppercase tracking-[0.18em] text-body lg:w-40">
+            Our partners
+          </h2>
+
+          {/* Two columns at every width, so the four marks read as a 2x2 block
+              rather than a single row. Without tiles to impose a shared box,
+              the marks are centred in their cells and the gutters carry the
+              separation. */}
+          <div className="grid flex-1 grid-cols-2 items-center justify-items-center gap-x-10 gap-y-14">
+            {partners.map((partner) => (
+              <a
+                key={partner.name}
+                href={partner.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-8 focus-visible:ring-offset-surface"
+              >
+                <Image
+                  src={partner.src}
+                  alt={partner.name}
+                  width={partner.width}
+                  height={partner.height}
+                  className="h-10 w-auto max-w-full object-contain sm:h-12"
+                />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
