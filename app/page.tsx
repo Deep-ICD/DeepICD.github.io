@@ -237,8 +237,12 @@ function Team() {
       </p>
 
       {/* Square frames: six of the seven source portraits are already 1:1, so
-          this crops almost nothing. The previous 2:5 frame zoomed them ~2.5x. */}
-      <div className="mt-16 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 lg:grid-cols-7">
+          this crops almost nothing. The previous 2:5 frame zoomed them ~2.5x.
+
+          Four columns at every breakpoint from sm, so the seven members always
+          wrap to two rows of 4 + 3 rather than a single thin strip. The wider
+          cards that follow need more gutter than the 7-up row did. */}
+      <div className="mt-16 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
         {team.map((member) => (
           <article key={member.name}>
             <a
@@ -263,7 +267,7 @@ function Team() {
                   src={member.photo}
                   alt={`${member.name}, ${member.role}`}
                   fill
-                  sizes="(min-width: 1024px) 15vw, (min-width: 640px) 25vw, 50vw"
+                  sizes="(min-width: 640px) 25vw, 50vw"
                   style={{ objectPosition: member.objectPosition ?? "50% 25%" }}
                   className="object-cover"
                 />
