@@ -8,6 +8,9 @@
 
   --color-surface: #0b1420;
   --color-raised: #111d2c;
+  /* One step below surface, for the partners band: the layout reference sets
+     that strip apart as the darkest band on the page. */
+  --color-deep: #070e17;
   /* Light tile behind each partner mark. They are dark-ink PNGs plus one
      opaque JPG, so they cannot sit on the dark ground; the tiles keep that
      light contained rather than running it across the full width. */
@@ -23,6 +26,25 @@
    resolve var() references. */
 @theme inline {
   --font-sans: var(--font-noto-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* The header links jump to sections on this page. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Clears the fixed header when a link jumps to a section. It is compact by
+   then: ~100px with its two rows below md, ~64px in one row from md. */
+section[id] {
+  scroll-margin-top: 7rem;
+}
+
+@media (min-width: 48rem) {
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
 }
 
 body {

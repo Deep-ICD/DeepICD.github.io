@@ -1,8 +1,110 @@
 import Image from "next/image";
+import Link from "next/link";
+import Eyebrow from "./components/Eyebrow";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 import Overview from "./components/Overview";
+import PublicationItem from "./components/PublicationItem";
+import {
+  featuredPublications,
+  totalPublications,
+} from "./lib/publications";
+import {
+  CONTACT_EMAIL,
+  LOGIN_URL,
+  focusRing,
+  primaryButton,
+  secondaryButton,
+} from "./lib/site";
 
-const LOGIN_URL = "https://deep-icd.soton.ac.uk/accounts/login/";
-const LOGO = "/logo-deep-icd-light.png";
+const benefits = [
+  {
+    title: "See changes over time",
+    body: "Explore the recording across 24 hours, including periods that may warrant closer review.",
+  },
+  {
+    title: "Make insights easier to review",
+    body: "Bring lengthy recordings into clear visual summaries, with detail available for further examination.",
+  },
+  {
+    title: "Support personalised assessment",
+    body: "Use the patient's individual recording to inform clinical discussion and screening decisions.",
+  },
+];
+
+/* How the tool is used, in the order a clinician moves through it: each view
+   opens the next, which is what the step numbering encodes. Descriptions
+   follow the platform team's own account of each screen.
+
+   The overview and the report span both columns; the two drill-down views sit
+   side by side between them. All four are light-themed platform output, so
+   each sits on its own white plate rather than straight on the dark surface. */
+const toolViews = [
+  {
+    step: "Overview",
+    title: "The 24-hour timeline",
+    caption:
+      "After submitting a recording for analysis, the clinician sees an overview of the whole day across each recorded vector.",
+    src: "/24_hour_timeline(1).png",
+    width: 2616,
+    height: 1546,
+    wide: true,
+    alt: "Deep-ICD's 24-hour overview for a test S-ICD recording: predicted T:R ratios in 10-second windows across the day for vectors A, B and C, with windows above the ratio of concern in red and noisy windows in orange.",
+  },
+  {
+    step: "Zoom in",
+    title: "A closer look at a chosen time",
+    caption:
+      "Choosing a time on the overview opens a second timeline, showing that period in more detail.",
+    src: "/timeline_zoomed_in-Picsart-AiImageEnhancer.png",
+    width: 2426,
+    height: 1300,
+    wide: false,
+    alt: "The 24-hour overview with a second timeline beneath it, showing the chosen period from 04:45 to 05:00 in more detail.",
+  },
+  {
+    step: "ECG sample",
+    title: "The ECG behind a prediction",
+    caption:
+      "Selecting a specific example on the second timeline shows the 10-second ECG sample it came from.",
+    src: "/ecg_sample(1).png",
+    width: 4820,
+    height: 2628,
+    wide: false,
+    alt: "A 10-second ECG sample for vectors A, B and C, from 04:55:21 to 04:55:30.",
+  },
+  {
+    step: "Report",
+    title: "Predicted T:R distribution",
+    caption:
+      "Clinicians can generate a PDF report, including how the predicted T:R ratios are distributed for each vector.",
+    /* Rendered from the vector content of the platform's own sample report
+       (public/report/), cropped to its distribution chart -- not redrawn. */
+    src: "/report-tr-distribution.png",
+    width: 2300,
+    height: 660,
+    wide: true,
+    alt: "Histograms of predicted T:R ratios for vectors A, B and C from a test recording, with the 1:3 ratio of concern marked by a vertical line and windows above it shown in red. Noisy windows: 11% for vector A, 0.37% for B and 0.41% for C.",
+  },
+];
+
+const steps = [
+  {
+    label: "Record",
+    title: "Capture the 24-hour picture",
+    body: "A Holter recording captures how the patient's heart signals vary across the day.",
+  },
+  {
+    label: "Explore",
+    title: "Review clear visual insights",
+    body: "Deep-ICD analyses the recording and presents patterns for closer review.",
+  },
+  {
+    label: "Inform",
+    title: "Support clinical judgement",
+    body: "Clinicians interpret the findings alongside the patient's wider clinical assessment.",
+  },
+];
 
 const partners = [
   {
@@ -36,16 +138,17 @@ const partners = [
   },
 ];
 
-/* `href` is each member's institutional or professional profile. It is the only
-   link we render: the previous per-member Facebook/GitHub/LinkedIn row pointed
-   every icon at "#" regardless of whether the account existed. */
+/* `href` is each member's institutional or professional profile, and the only
+   link we render: the earlier per-member Facebook/GitHub/LinkedIn row pointed
+   every icon at "#" whether or not the account existed. Members without a
+   public profile, or without a portrait yet, simply omit `href` / `photo`. */
 type TeamMember = {
   name: string;
   initials: string;
-  photo: string;
+  photo?: string;
   role: string;
   institution: string;
-  href: string;
+  href?: string;
   /* Overrides the default portrait crop when a source photo is not centred. */
   objectPosition?: string;
 };
@@ -55,31 +158,15 @@ const team: TeamMember[] = [
     name: "Prof Alain Zemkoho",
     initials: "AZ",
     photo: "/team-Alain.webp",
-    role: "Primary investigator",
+    role: "Principal Investigator",
     institution: "University of Southampton",
     href: "https://www.southampton.ac.uk/people/5xd5hn/professor-alain-zemkoho",
-  },
-  {
-    name: "Samuel Ward",
-    initials: "SW",
-    photo: "/team-Samuel.webp",
-    role: "Doctoral researcher",
-    institution: "University of Southampton",
-    href: "https://www.southampton.ac.uk/people/5zv8fk/mr-samuel-ward",
-  },
-  {
-    name: "Dr Sam Mangham",
-    initials: "SM",
-    photo: "/team-Sam.webp",
-    role: "Research software engineer",
-    institution: "University of Southampton",
-    href: "https://www.southampton.ac.uk/people/5xm6qj/doctor-sam-mangham",
   },
   {
     name: "Dr John Paisey",
     initials: "JP",
     photo: "/Paisey-Dr-John-cardiology-photo.xbbff1846.jpg",
-    role: "Clinical lead",
+    role: "Clinical Lead",
     institution: "University Hospital Southampton",
     href: "https://www.uhs.nhs.uk/for-patients/find-your-consultant/dr-john-paisey",
   },
@@ -87,55 +174,91 @@ const team: TeamMember[] = [
     name: "Prof Paul Roberts",
     initials: "PR",
     photo: "/Paul Roberts.jpg",
-    role: "Clinical lead (outgoing)",
+    role: "Clinical Co-Lead",
     institution: "University Hospital Southampton",
     href: "https://www.uhs.nhs.uk/for-patients/find-your-consultant/prof-paul-roberts",
-  },
-  {
-    name: "Dr Lin-Thiri Toon",
-    initials: "LT",
-    photo: "/Lin Thirin Toon.jpg",
-    role: "Clinical researcher",
-    institution: "University Hospital Southampton",
-    href: "https://www.linkedin.com/in/lin-thiri-toon-26b381149/",
   },
   {
     name: "Dr Anthony Dunn",
     initials: "AD",
     photo: "/Anthony Dunn.jpg",
-    role: "Industrial partner",
-    institution: "Decision Analysis Services",
+    role: "Research Collaborator",
+    institution: "University of Southampton",
     href: "https://www.linkedin.com/in/anthony-dunn-ab093a234/",
+  },
+  {
+    name: "Dr Mohamed ElRefai",
+    initials: "ME",
+    photo: "/Mohamed ElRefai.jpg",
+    role: "Clinical Research Collaborator",
+    institution: "University Hospital Southampton",
+    href: "https://scholar.google.com/citations?user=wMl-xnUAAAAJ&hl=en",
+  },
+  {
+    name: "Samuel Ward",
+    initials: "SW",
+    photo: "/team-Samuel.webp",
+    role: "Doctoral Researcher",
+    institution: "University of Southampton",
+    href: "https://www.southampton.ac.uk/people/5zv8fk/mr-samuel-ward",
+  },
+  {
+    name: "Dr Lin-Thiri Toon",
+    initials: "LT",
+    photo: "/Lin Thirin Toon.jpg",
+    role: "Clinical Researcher",
+    institution: "University Hospital Southampton",
+    href: "https://www.linkedin.com/in/lin-thiri-toon-26b381149/",
+  },
+  {
+    name: "Bartosz Morawski",
+    initials: "BM",
+    photo: "/Bartosz.jpg",
+    role: "Doctoral Researcher",
+    institution: "University of Southampton",
+    href: "https://www.linkedin.com/in/bartosz-morawski-b21abb214",
+  },
+  {
+    name: "Dr Alex Touze",
+    initials: "AT",
+    role: "Clinical Researcher",
+    institution: "University Hospital Southampton",
+  },
+  {
+    name: "Dr Sam Mangham",
+    initials: "SM",
+    photo: "/team-Sam.webp",
+    role: "Research Software Engineer",
+    institution: "University of Southampton",
+    href: "https://www.southampton.ac.uk/people/5xm6qj/doctor-sam-mangham",
   },
 ];
 
-function Navbar() {
+function SectionHeader({
+  eyebrow,
+  title,
+  intro,
+}: {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+}) {
   return (
-    <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-      <a href="#" className="shrink-0">
-        <Image
-          src={LOGO}
-          alt="Deep-ICD"
-          width={2929}
-          height={756}
-          priority
-          className="h-16 w-auto sm:h-20"
-        />
-      </a>
-
-      <a
-        href={LOGIN_URL}
-        className="rounded-full border border-white/25 px-6 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-white/50 hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-      >
-        Log in
-      </a>
-    </header>
+    <div className="max-w-3xl">
+      <Eyebrow>{eyebrow}</Eyebrow>
+      <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+        {title}
+      </h2>
+      {intro && (
+        <p className="mt-5 text-base leading-relaxed text-body">{intro}</p>
+      )}
+    </div>
   );
 }
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-surface">
+    <section id="top" className="relative overflow-hidden bg-surface">
       {/* The hero's height comes from the copy, so it is fixed at ~595px while
           `cover` scales the art to the box width. Past 1920px that magnifies
           the trace until its peak and trough fall outside the band -- so the
@@ -148,7 +271,7 @@ function Hero() {
           src="/ecg_right_side.png"
           alt=""
           fill
-          priority
+          preload
           sizes="(min-width: 1920px) 1920px, 100vw"
           className="object-cover object-right"
         />
@@ -172,20 +295,276 @@ function Hero() {
       {/* Seam into the section below. */}
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-surface" />
 
-      <div className="relative z-10">
-        <Navbar />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-6xl px-6 pb-28 pt-12 lg:pb-40 lg:pt-20">
+      {/* The header is fixed above this section rather than inside it, so the
+          top padding reserves its expanded height plus the original gap:
+          156px / 172px (two rows below md) or 128px (one row from md), plus
+          48px (64px from lg). */}
+      <div className="relative z-10 mx-auto max-w-6xl px-6 pb-28 pt-[204px] sm:pt-[220px] md:pt-44 lg:pb-36 lg:pt-48">
         <div className="max-w-xl">
-          <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-ink sm:text-5xl lg:text-6xl">
-            AI-assisted ICD eligibility screening
+          <Eyebrow>AI-assisted ICD screening</Eyebrow>
+
+          <h1 className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight text-ink sm:text-5xl lg:text-6xl">
+            <span className="block">A fuller picture.</span>
+            <span className="block">More informed ICD decisions.</span>
           </h1>
 
-          <p className="mt-6 max-w-lg text-lg leading-relaxed text-body sm:text-xl">
-            A research project using AI to improve ICD eligibility screening
-            through ECG analysis.
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-body">
+            Deep-ICD turns 24-hour heart recordings into clear, visual insights
+            to help clinicians assess suitability for subcutaneous and
+            extravascular defibrillators—revealing changes that
+            state-of-the-art screening practices may miss.
           </p>
+
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <a href="#tool" className={primaryButton}>
+              Explore the tool
+            </a>
+            <a href="#contact" className={secondaryButton}>
+              Discuss a collaboration
+            </a>
+          </div>
+
+          <p className="mt-8 max-w-md text-sm leading-relaxed text-body">
+            ICD means implantable cardioverter-defibrillator: a device that
+            treats potentially life-threatening heart rhythms.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WhyItMatters() {
+  return (
+    <section className="border-y border-hairline bg-raised">
+      <div className="mx-auto max-w-6xl px-6 py-24">
+        <SectionHeader
+          eyebrow="Why a fuller picture matters"
+          title="Heart signals change. Screening should capture that."
+          intro="A short recording captures a moment in time. Deep-ICD is designed to help clinicians explore changes across the day and identify patterns relevant to device suitability and the risk of unnecessary shocks."
+        />
+
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {benefits.map((benefit) => (
+            <div
+              key={benefit.title}
+              className="rounded-xl bg-surface p-7 ring-1 ring-hairline"
+            >
+              <h3 className="text-lg font-semibold leading-snug text-ink">
+                {benefit.title}
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-body">
+                {benefit.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Tool() {
+  return (
+    <section id="tool" className="bg-surface">
+      <div className="mx-auto max-w-6xl px-6 py-24">
+        <SectionHeader
+          eyebrow="See what Deep-ICD reveals"
+          title="From a day of recordings to a clearer clinical picture."
+          intro="Each view leads to the next, from the full recording down to the ECG behind a single prediction."
+        />
+
+        <ol className="mt-12 grid gap-6 md:grid-cols-2">
+          {toolViews.map((view, i) => (
+            <li key={view.src} className={view.wide ? "md:col-span-2" : ""}>
+              <figure className="h-full rounded-xl bg-raised p-4 ring-1 ring-hairline sm:p-5">
+                <div className="overflow-hidden rounded-lg bg-white">
+                  <Image
+                    src={view.src}
+                    alt={view.alt}
+                    width={view.width}
+                    height={view.height}
+                    sizes={
+                      view.wide
+                        ? "(min-width: 1152px) 1064px, 100vw"
+                        : "(min-width: 768px) 50vw, 100vw"
+                    }
+                    className="h-auto w-full"
+                  />
+                </div>
+                <figcaption className="mt-5 px-1 pb-1">
+                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+                    {String(i + 1).padStart(2, "0")} · {view.step}
+                  </p>
+                  <h3 className="mt-3 text-lg font-semibold leading-snug text-ink">
+                    {view.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-body">
+                    {view.caption}
+                  </p>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ol>
+
+        {/* These views look clinical, so state plainly what they are. Wording
+            follows the disclaimer printed on the platform's own reports. */}
+        <p className="mt-8 max-w-3xl text-xs leading-relaxed text-body">
+          Example output from a test recording. Deep-ICD is research software,
+          not a tested medical device, and is not for diagnostic use.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function Approach() {
+  return (
+    <section className="border-y border-hairline bg-raised">
+      <div className="mx-auto max-w-6xl px-6 py-24">
+        <SectionHeader
+          eyebrow="The screening approach"
+          title="Record. Explore. Inform."
+        />
+
+        {/* An ordered list: the three stages are a genuine sequence, which is
+            also what the visible 01 / 02 / 03 numbering encodes. */}
+        <ol className="mt-12 grid gap-6 md:grid-cols-3">
+          {steps.map((step, i) => (
+            <li
+              key={step.label}
+              className="rounded-xl bg-surface p-7 ring-1 ring-hairline"
+            >
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+                {String(i + 1).padStart(2, "0")} · {step.label}
+              </p>
+              <h3 className="mt-4 text-lg font-semibold leading-snug text-ink">
+                {step.title}
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-body">
+                {step.body}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function Publications() {
+  return (
+    <section id="publications" className="bg-surface">
+      <div className="mx-auto max-w-6xl px-6 py-24">
+        <SectionHeader
+          eyebrow="Research and publications"
+          title="The research behind Deep-ICD"
+          intro="Explore the methods, clinical studies, and ongoing work behind prolonged ICD screening."
+        />
+
+        {/* The four most recent journal articles; abstracts and the current
+            manuscript are on /publications, with full author lists. */}
+        <ul className="mt-12 grid gap-6 md:grid-cols-2">
+          {featuredPublications.map((item) => (
+            <li
+              key={item.title}
+              className="flex flex-col rounded-xl bg-raised p-7 ring-1 ring-hairline"
+            >
+              <PublicationItem item={item} authors="short" variant="card" />
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-10">
+          <Link href="/publications" className={secondaryButton}>
+            View all {totalPublications} research outputs
+            <span aria-hidden="true" className="ml-2">
+              →
+            </span>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TeamCard({ member }: { member: TeamMember }) {
+  const portrait = (
+    <div className="relative aspect-square overflow-hidden rounded-xl bg-surface ring-1 ring-hairline transition group-hover:ring-brand/60 group-focus-visible:ring-2 group-focus-visible:ring-brand">
+      {/* Monogram sits underneath as a fallback, so a member without a
+          portrait yet -- or a failed photo -- shows initials, not an empty
+          frame. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 flex items-center justify-center"
+      >
+        <span className="text-3xl font-bold text-brand/60">
+          {member.initials}
+        </span>
+      </div>
+
+      {member.photo && (
+        <Image
+          src={member.photo}
+          alt={`${member.name}, ${member.role}`}
+          fill
+          sizes="(min-width: 1024px) 25vw, 50vw"
+          style={{ objectPosition: member.objectPosition ?? "50% 25%" }}
+          className="object-cover"
+        />
+      )}
+    </div>
+  );
+
+  const nameClass = "mt-4 text-base font-semibold leading-tight text-ink";
+
+  return (
+    <article>
+      {member.href ? (
+        <a
+          href={member.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block focus-visible:outline-none"
+        >
+          {portrait}
+          <p className={`${nameClass} group-hover:text-brand`}>
+            {member.name}
+          </p>
+        </a>
+      ) : (
+        <div>
+          {portrait}
+          <p className={nameClass}>{member.name}</p>
+        </div>
+      )}
+      <p className="mt-1.5 text-sm leading-tight text-body">{member.role}</p>
+      <p className="mt-1 text-xs leading-tight text-body">
+        {member.institution}
+      </p>
+    </article>
+  );
+}
+
+function Team() {
+  return (
+    <section id="team" className="border-y border-hairline bg-raised">
+      <div className="mx-auto max-w-6xl px-6 py-24">
+        <SectionHeader
+          eyebrow="The people behind the project"
+          title="Clinical experience meets mathematical innovation."
+          intro="Deep-ICD brings together cardiologists, mathematicians, AI experts, and software engineers at the University of Southampton and University Hospital Southampton."
+        />
+
+        {/* Square frames: most source portraits are already 1:1, so this crops
+            almost nothing. Four columns from lg; two below that keeps ten
+            portraits from becoming a single column of full-width faces on a
+            phone. */}
+        <div className="mt-14 grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
+          {team.map((member) => (
+            <TeamCard key={member.name} member={member} />
+          ))}
         </div>
       </div>
     </section>
@@ -194,7 +573,7 @@ function Hero() {
 
 function Partners() {
   return (
-    /* No tile behind the marks: all four now sit straight on the surface.
+    /* No tile behind the marks: all four sit straight on the band.
 
        That needs artwork that survives a dark ground, which two of them did
        not. partner-southampton-white.png and partner-das-white.png are
@@ -211,145 +590,91 @@ function Partners() {
        reversed out, so it carries its own ground and needs no help. Note its
        identity guidelines are strict about the logo never being reversed and
        about dark backgrounds -- worth confirming this placement with UHS. */
-    <section className="border-t border-hairline bg-surface">
-      <div className="mx-auto max-w-6xl px-6 py-20">
-        {/* The label sits beside the marks rather than above them, centred
-            against the full two-row block so it reads as one unit with them.
-            Below lg there is no room for a side column, so it stacks back on
-            top and aligns left with the grid beneath it. */}
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
-          <h2 className="shrink-0 text-sm font-semibold uppercase tracking-[0.18em] text-body lg:w-40">
-            Our partners
-          </h2>
+    <section className="bg-deep">
+      <div className="mx-auto max-w-6xl px-6 py-16">
+        <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-body">
+          Our partners
+        </h2>
 
-          {/* Two columns at every width, so the four marks read as a 2x2 block
-              rather than a single row. Without tiles to impose a shared box,
-              the marks are centred in their cells and the gutters carry the
-              separation. */}
-          <div className="grid flex-1 grid-cols-2 items-center justify-items-center gap-x-10 gap-y-14">
-            {partners.map((partner) => (
-              <a
-                key={partner.name}
-                href={partner.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-8 focus-visible:ring-offset-surface"
-              >
-                <Image
-                  src={partner.src}
-                  alt={partner.name}
-                  width={partner.width}
-                  height={partner.height}
-                  className="h-10 w-auto max-w-full object-contain sm:h-12"
-                />
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Team() {
-  return (
-    <section className="mx-auto max-w-6xl px-6 pb-28">
-      <h2 className="mt-5 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-        A cross-disciplinary collaboration
-      </h2>
-      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-body">
-        Deep-ICD brings together the University of Southampton&apos;s School of
-        Mathematical Sciences, University Hospital Southampton&apos;s cardiology
-        department and Decision Analysis Services.
-      </p>
-
-      {/* Square frames: six of the seven source portraits are already 1:1, so
-          this crops almost nothing. The previous 2:5 frame zoomed them ~2.5x.
-
-          Four columns at every breakpoint from sm, so the seven members always
-          wrap to two rows of 4 + 3 rather than a single thin strip. The wider
-          cards that follow need more gutter than the 7-up row did. */}
-      <div className="mt-16 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
-        {team.map((member) => (
-          <article key={member.name}>
+        {/* One row of four from md, as in the layout reference; a 2x2 block
+            below that. The marks are centred in their cells and the gutters
+            carry the separation. */}
+        <div className="mt-10 grid grid-cols-2 items-center justify-items-center gap-x-10 gap-y-12 md:grid-cols-4">
+          {partners.map((partner) => (
             <a
-              href={member.href}
+              key={partner.name}
+              href={partner.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block focus-visible:outline-none"
+              className="transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-8 focus-visible:ring-offset-deep"
             >
-              <div className="relative aspect-square overflow-hidden rounded-xl bg-raised ring-1 ring-hairline transition group-hover:ring-brand/60 group-focus-visible:ring-2 group-focus-visible:ring-brand">
-                {/* Monogram sits underneath as a fallback, so a missing or
-                    failed photo leaves initials rather than an empty frame. */}
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 flex items-center justify-center"
-                >
-                  <span className="text-3xl font-bold text-brand/60">
-                    {member.initials}
-                  </span>
-                </div>
-
-                <Image
-                  src={member.photo}
-                  alt={`${member.name}, ${member.role}`}
-                  fill
-                  sizes="(min-width: 640px) 25vw, 50vw"
-                  style={{ objectPosition: member.objectPosition ?? "50% 25%" }}
-                  className="object-cover"
-                />
-              </div>
-
-              <p className="mt-3 text-sm font-semibold leading-tight text-ink group-hover:text-brand">
-                {member.name}
-              </p>
+              <Image
+                src={partner.src}
+                alt={partner.name}
+                width={partner.width}
+                height={partner.height}
+                className="h-10 w-auto max-w-full object-contain sm:h-12"
+              />
             </a>
-            <p className="mt-1 text-xs leading-tight text-body">{member.role}</p>
-            <p className="mt-0.5 text-xs leading-tight text-body/70">
-              {member.institution}
-            </p>
-          </article>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-function Footer() {
+function Contact() {
   return (
-    <footer className="border-t border-hairline bg-raised">
-      <div className="mx-auto max-w-6xl px-6 py-14">
-        <div className="max-w-sm">
-          <Image
-            src={LOGO}
-            alt="Deep-ICD"
-            width={2929}
-            height={756}
-            className="h-10 w-auto"
-          />
-          <p className="mt-6 text-sm leading-relaxed text-body">
-            A research project using AI to improve ICD eligibility screening
-            through ECG analysis.
-          </p>
+    <section id="contact" className="border-t-2 border-brand bg-surface">
+      <div className="mx-auto max-w-3xl px-6 py-24 text-center">
+        <Eyebrow>Work with us</Eyebrow>
+        <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+          Help shape the future of personalised ICD screening.
+        </h2>
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-body">
+          Interested in exploring Deep-ICD, discussing the research, or
+          collaborating on grants and future studies? We welcome conversations
+          with clinicians and clinical teams, as well as mathematicians and AI
+          experts.
+        </p>
+
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+          <a href={`mailto:${CONTACT_EMAIL}`} className={primaryButton}>
+            Contact the team
+          </a>
+          <a href={LOGIN_URL} className={secondaryButton}>
+            Log in to Deep-ICD
+          </a>
         </div>
 
-        <div className="mt-10 flex flex-col items-center gap-3 border-t border-hairline pt-6 sm:flex-row sm:justify-between">
-          <p className="text-xs text-body">
-            &copy; {new Date().getFullYear()} Deep-ICD. All rights reserved.
-          </p>
-        </div>
+        <p className="mt-6 text-sm">
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className={`rounded-sm text-brand underline-offset-4 hover:underline ${focusRing}`}
+          >
+            {CONTACT_EMAIL}
+          </a>
+        </p>
       </div>
-    </footer>
+    </section>
   );
 }
 
 export default function Home() {
   return (
     <>
+      <Navbar />
       <Hero />
+      {/* Not in the layout reference: kept by request, directly under the
+          hero, where it explains the method before the case for it. */}
       <Overview />
+      <WhyItMatters />
+      <Tool />
+      <Approach />
+      <Publications />
       <Team />
       <Partners />
+      <Contact />
       <Footer />
     </>
   );
