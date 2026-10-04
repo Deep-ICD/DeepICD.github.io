@@ -220,8 +220,12 @@ export const publicationGroups: PublicationGroup[] = [
 
 /* The homepage shows peer-reviewed full papers rather than the newest items
    overall: two of the newest are conference abstracts. Journal articles are
-   already listed newest first. */
-export const featuredPublications = publicationGroups[0].items.slice(0, 4);
+   already listed newest first. Looked up by heading, so reordering the groups
+   can't quietly swap abstracts onto the homepage. */
+export const featuredPublications = (
+  publicationGroups.find((group) => group.heading === "Journal articles")
+    ?.items ?? []
+).slice(0, 4);
 
 export const totalPublications = publicationGroups.reduce(
   (n, group) => n + group.items.length,

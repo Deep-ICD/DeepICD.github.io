@@ -13,6 +13,7 @@ import {
   CONTACT_EMAIL,
   LOGIN_URL,
   focusRing,
+  headerOffset,
   primaryButton,
   secondaryButton,
 } from "./lib/site";
@@ -45,9 +46,9 @@ const toolViews = [
     title: "The 24-hour timeline",
     caption:
       "After submitting a recording for analysis, the clinician sees an overview of the whole day across each recorded vector.",
-    src: "/24_hour_timeline(1).png",
-    width: 2616,
-    height: 1546,
+    src: "/images/tool/24-hour-timeline.webp",
+    width: 2128,
+    height: 1258,
     wide: true,
     alt: "Deep-ICD's 24-hour overview for a test S-ICD recording: predicted T:R ratios in 10-second windows across the day for vectors A, B and C, with windows above the ratio of concern in red and noisy windows in orange.",
   },
@@ -56,9 +57,9 @@ const toolViews = [
     title: "A closer look at a chosen time",
     caption:
       "Choosing a time on the overview opens a second timeline, showing that period in more detail.",
-    src: "/timeline_zoomed_in-Picsart-AiImageEnhancer.png",
-    width: 2426,
-    height: 1300,
+    src: "/images/tool/timeline-zoomed-in.webp",
+    width: 1000,
+    height: 536,
     wide: false,
     alt: "The 24-hour overview with a second timeline beneath it, showing the chosen period from 04:45 to 05:00 in more detail.",
   },
@@ -67,9 +68,9 @@ const toolViews = [
     title: "The ECG behind a prediction",
     caption:
       "Selecting a specific example on the second timeline shows the 10-second ECG sample it came from.",
-    src: "/ecg_sample(1).png",
-    width: 4820,
-    height: 2628,
+    src: "/images/tool/ecg-sample.webp",
+    width: 1000,
+    height: 545,
     wide: false,
     alt: "A 10-second ECG sample for vectors A, B and C, from 04:55:21 to 04:55:30.",
   },
@@ -80,9 +81,9 @@ const toolViews = [
       "Clinicians can generate a PDF report, including how the predicted T:R ratios are distributed for each vector.",
     /* Rendered from the vector content of the platform's own sample report
        (public/report/), cropped to its distribution chart -- not redrawn. */
-    src: "/report-tr-distribution.png",
-    width: 2300,
-    height: 660,
+    src: "/images/tool/report-tr-distribution.webp",
+    width: 2128,
+    height: 611,
     wide: true,
     alt: "Histograms of predicted T:R ratios for vectors A, B and C from a test recording, with the 1:3 ratio of concern marked by a vertical line and windows above it shown in red. Noisy windows: 11% for vector A, 0.37% for B and 0.41% for C.",
   },
@@ -110,31 +111,31 @@ const partners = [
   {
     name: "University of Southampton School of Mathematical Sciences",
     href: "https://www.southampton.ac.uk/about/faculties-schools-departments/school-of-mathematical-sciences",
-    src: "/partner-southampton-white.png",
-    width: 1767,
-    height: 375,
+    src: "/images/partners/southampton.webp",
+    width: 452,
+    height: 96,
   },
 
   {
     name: "NHS University Hospital Southampton",
     href: "https://www.uhs.nhs.uk/",
-    src: "/partner-nhs.jpg",
-    width: 293,
-    height: 118,
+    src: "/images/partners/nhs.webp",
+    width: 238,
+    height: 96,
   },
   {
     name: "Research Software Group Southampton",
     href: "https://rsgsoton.net/",
-    src: "/partner-rsg.png",
-    width: 446,
-    height: 132,
+    src: "/images/partners/rsg.webp",
+    width: 324,
+    height: 96,
   },
   {
     name: "Decision Analysis Services",
     href: "https://www.das-int.com/",
-    src: "/partner-das-white.png",
-    width: 1090,
-    height: 242,
+    src: "/images/partners/das.webp",
+    width: 432,
+    height: 96,
   },
 ];
 
@@ -157,7 +158,7 @@ const team: TeamMember[] = [
   {
     name: "Prof Alain Zemkoho",
     initials: "AZ",
-    photo: "/team-Alain.webp",
+    photo: "/images/team/alain-zemkoho.webp",
     role: "Principal Investigator",
     institution: "University of Southampton",
     href: "https://www.southampton.ac.uk/people/5xd5hn/professor-alain-zemkoho",
@@ -165,7 +166,7 @@ const team: TeamMember[] = [
   {
     name: "Dr John Paisey",
     initials: "JP",
-    photo: "/Paisey-Dr-John-cardiology-photo.xbbff1846.jpg",
+    photo: "/images/team/john-paisey.webp",
     role: "Clinical Lead",
     institution: "University Hospital Southampton",
     href: "https://www.uhs.nhs.uk/for-patients/find-your-consultant/dr-john-paisey",
@@ -173,7 +174,7 @@ const team: TeamMember[] = [
   {
     name: "Prof Paul Roberts",
     initials: "PR",
-    photo: "/Paul Roberts.jpg",
+    photo: "/images/team/paul-roberts.webp",
     role: "Clinical Co-Lead",
     institution: "University Hospital Southampton",
     href: "https://www.uhs.nhs.uk/for-patients/find-your-consultant/prof-paul-roberts",
@@ -181,7 +182,7 @@ const team: TeamMember[] = [
   {
     name: "Dr Anthony Dunn",
     initials: "AD",
-    photo: "/Anthony Dunn.jpg",
+    photo: "/images/team/anthony-dunn.webp",
     role: "Research Collaborator",
     institution: "University of Southampton",
     href: "https://www.linkedin.com/in/anthony-dunn-ab093a234/",
@@ -189,7 +190,7 @@ const team: TeamMember[] = [
   {
     name: "Dr Mohamed ElRefai",
     initials: "ME",
-    photo: "/Mohamed ElRefai.jpg",
+    photo: "/images/team/mohamed-elrefai.webp",
     role: "Clinical Research Collaborator",
     institution: "University Hospital Southampton",
     href: "https://scholar.google.com/citations?user=wMl-xnUAAAAJ&hl=en",
@@ -197,7 +198,7 @@ const team: TeamMember[] = [
   {
     name: "Samuel Ward",
     initials: "SW",
-    photo: "/team-Samuel.webp",
+    photo: "/images/team/samuel-ward.webp",
     role: "Doctoral Researcher",
     institution: "University of Southampton",
     href: "https://www.southampton.ac.uk/people/5zv8fk/mr-samuel-ward",
@@ -205,7 +206,7 @@ const team: TeamMember[] = [
   {
     name: "Dr Lin-Thiri Toon",
     initials: "LT",
-    photo: "/Lin Thirin Toon.jpg",
+    photo: "/images/team/lin-thiri-toon.webp",
     role: "Clinical Researcher",
     institution: "University Hospital Southampton",
     href: "https://www.linkedin.com/in/lin-thiri-toon-26b381149/",
@@ -213,7 +214,7 @@ const team: TeamMember[] = [
   {
     name: "Bartosz Morawski",
     initials: "BM",
-    photo: "/Bartosz.jpg",
+    photo: "/images/team/bartosz-morawski.webp",
     role: "Doctoral Researcher",
     institution: "University of Southampton",
     href: "https://www.linkedin.com/in/bartosz-morawski-b21abb214",
@@ -227,7 +228,7 @@ const team: TeamMember[] = [
   {
     name: "Dr Sam Mangham",
     initials: "SM",
-    photo: "/team-Sam.webp",
+    photo: "/images/team/sam-mangham.webp",
     role: "Research Software Engineer",
     institution: "University of Southampton",
     href: "https://www.southampton.ac.uk/people/5xm6qj/doctor-sam-mangham",
@@ -268,7 +269,7 @@ function Hero() {
           the artwork. */}
       <div className="absolute inset-y-0 right-0 w-full max-w-[1920px]">
         <Image
-          src="/ecg_right_side.png"
+          src="/images/hero-ecg.webp"
           alt=""
           fill
           preload
@@ -296,15 +297,16 @@ function Hero() {
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-surface" />
 
       {/* The header is fixed above this section rather than inside it, so the
-          top padding reserves its expanded height plus the original gap:
-          156px / 172px (two rows below md) or 128px (one row from md), plus
-          48px (64px from lg). */}
-      <div className="relative z-10 mx-auto max-w-6xl px-6 pb-28 pt-[204px] sm:pt-[220px] md:pt-44 lg:pb-36 lg:pt-48">
+          top padding reserves its height (see headerOffset); from lg the gap
+          beneath it grows from 48px to 64px. */}
+      <div
+        className={`relative z-10 mx-auto max-w-6xl px-6 pb-28 lg:pb-36 lg:pt-48 ${headerOffset}`}
+      >
         <div className="max-w-xl">
           <Eyebrow>AI-assisted ICD screening</Eyebrow>
 
           <h1 className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight text-ink sm:text-5xl lg:text-6xl">
-            <span className="block">A fuller picture.</span>
+            <span className="block">A fuller picture.</span>{" "}
             <span className="block">More informed ICD decisions.</span>
           </h1>
 
@@ -507,9 +509,9 @@ function TeamCard({ member }: { member: TeamMember }) {
       {member.photo && (
         <Image
           src={member.photo}
-          alt={`${member.name}, ${member.role}`}
+          alt=""
           fill
-          sizes="(min-width: 1024px) 25vw, 50vw"
+          sizes="(min-width: 1152px) 264px, (min-width: 1024px) 25vw, 50vw"
           style={{ objectPosition: member.objectPosition ?? "50% 25%" }}
           className="object-cover"
         />
@@ -531,6 +533,7 @@ function TeamCard({ member }: { member: TeamMember }) {
           {portrait}
           <p className={`${nameClass} group-hover:text-brand`}>
             {member.name}
+            <span className="sr-only"> (opens in a new tab)</span>
           </p>
         </a>
       ) : (
@@ -664,17 +667,19 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <Hero />
-      {/* Not in the layout reference: kept by request, directly under the
-          hero, where it explains the method before the case for it. */}
-      <Overview />
-      <WhyItMatters />
-      <Tool />
-      <Approach />
-      <Publications />
-      <Team />
-      <Partners />
-      <Contact />
+      <main>
+        <Hero />
+        {/* Not in the layout reference: kept by request, directly under the
+            hero, where it explains the method before the case for it. */}
+        <Overview />
+        <WhyItMatters />
+        <Tool />
+        <Approach />
+        <Publications />
+        <Team />
+        <Partners />
+        <Contact />
+      </main>
       <Footer />
     </>
   );

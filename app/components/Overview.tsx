@@ -6,14 +6,16 @@ export default function Overview() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="about" className="scroll-mt-16">
-      <div className="mx-auto max-w-4xl px-6 py-28">
+    <section id="about">
+      {/* Same container as every other section, so the left edges line up;
+          the paragraph keeps its own max width for a readable line length. */}
+      <div className="mx-auto max-w-6xl px-6 py-28">
         <span className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-brand">
           Overview
         </span>
 
         <motion.p
-          className="mt-8 text-xl font-medium leading-relaxed tracking-tight text-ink sm:text-2xl sm:leading-relaxed"
+          className="mt-8 max-w-4xl text-xl font-medium leading-relaxed tracking-tight text-ink sm:text-2xl sm:leading-relaxed"
           initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}

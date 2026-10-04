@@ -2,7 +2,7 @@
 
 export const LOGIN_URL = "https://deep-icd.soton.ac.uk/accounts/login/";
 export const CONTACT_EMAIL = "deep-icd@soton.ac.uk";
-export const LOGO = "/logo-deep-icd-light.png";
+export const LOGO = "/images/logo-deep-icd-light.webp";
 
 /* Root-relative, so the header works from /publications as well as the
    homepage: a same-page jump on "/", navigate-then-scroll elsewhere. */
@@ -12,6 +12,12 @@ export const navLinks = [
   { label: "Team", href: "/#team" },
   { label: "Contact", href: "/#contact" },
 ];
+
+/* Top padding that clears the fixed header in its expanded state: 156px /
+   172px in two rows below md, 128px in one row from md, plus a 48px gap.
+   In rem, because the header is sized in rem -- with a larger default font
+   size it grows, and px padding would let it cover the content beneath. */
+export const headerOffset = "pt-[12.75rem] sm:pt-[13.75rem] md:pt-44";
 
 export const focusRing =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";

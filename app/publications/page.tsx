@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import PublicationItem from "../components/PublicationItem";
 import { publicationGroups } from "../lib/publications";
-import { focusRing } from "../lib/site";
+import { focusRing, headerOffset } from "../lib/site";
 
 export const metadata: Metadata = {
   title: "Research and publications | Deep-ICD",
@@ -18,10 +18,9 @@ export default function PublicationsPage() {
     <>
       <Navbar />
 
-      {/* The header is fixed, so the top padding reserves its expanded
-          height (156px / 172px in two rows below md, 128px in one row from
-          md) plus a 48px gap -- the same allowance the homepage hero makes. */}
-      <main className="mx-auto max-w-6xl px-6 pb-24 pt-[204px] sm:pt-[220px] md:pt-44">
+      {/* The header is fixed, so the top padding reserves its height -- the
+          same allowance the homepage hero makes (see headerOffset). */}
+      <main className={`mx-auto max-w-6xl px-6 pb-24 ${headerOffset}`}>
         <Link
           href="/#publications"
           className={`inline-flex items-center gap-2 rounded-sm text-sm font-medium text-body transition-colors hover:text-ink ${focusRing}`}

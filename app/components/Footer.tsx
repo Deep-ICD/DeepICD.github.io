@@ -9,8 +9,8 @@ export default function Footer() {
           <Image
             src={LOGO}
             alt="Deep-ICD"
-            width={2929}
-            height={756}
+            width={640}
+            height={165}
             className="h-10 w-auto"
           />
           <p className="mt-5 text-sm leading-relaxed text-body">

@@ -64,8 +64,8 @@ export default function Navbar() {
             <Image
               src={LOGO}
               alt="Deep-ICD"
-              width={2929}
-              height={756}
+              width={640}
+              height={165}
               preload
               className={`w-auto transition-[height] duration-300 motion-reduce:transition-none ${
                 compact ? "h-10" : "h-16 sm:h-20"
