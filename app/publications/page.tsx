@@ -45,7 +45,7 @@ export default function PublicationsPage() {
             <section key={group.heading} aria-labelledby={slug(group.heading)}>
               <h2
                 id={slug(group.heading)}
-                className="text-sm font-semibold uppercase tracking-[0.18em] text-body"
+                className="text-2xl font-bold tracking-tight text-ink"
               >
                 {group.heading}
               </h2>

@@ -103,7 +103,7 @@ const steps = [
   {
     label: "Inform",
     title: "Support clinical judgement",
-    body: "Clinicians interpret the findings alongside the patient's wider clinical assessment.",
+    body: "Clinicians interpret the findings, using them to inform the shared decision-making process with the patient.",
   },
 ];
 
@@ -164,7 +164,7 @@ const team: TeamMember[] = [
     href: "https://www.southampton.ac.uk/people/5xd5hn/professor-alain-zemkoho",
   },
   {
-    name: "Dr John Paisey",
+    name: "Prof John Paisey",
     initials: "JP",
     photo: "/images/team/john-paisey.webp",
     role: "Clinical Lead",
@@ -300,7 +300,7 @@ function Hero() {
           top padding reserves its height (see headerOffset); from lg the gap
           beneath it grows from 48px to 64px. */}
       <div
-        className={`relative z-10 mx-auto max-w-6xl px-6 pb-28 lg:pb-36 lg:pt-48 ${headerOffset}`}
+        className={`relative z-10 mx-auto max-w-6xl px-6 pb-24 lg:pt-48 ${headerOffset}`}
       >
         <div className="max-w-xl">
           <Eyebrow>AI-assisted ICD screening</Eyebrow>
@@ -313,7 +313,7 @@ function Hero() {
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-body">
             Deep-ICD turns 24-hour heart recordings into clear, visual insights
             to help clinicians assess suitability for subcutaneous and
-            extravascular defibrillators—revealing changes that
+            extravascular ICDs, revealing changes that
             state-of-the-art screening practices may miss.
           </p>
 
@@ -343,7 +343,7 @@ function WhyItMatters() {
         <SectionHeader
           eyebrow="Why a fuller picture matters"
           title="Heart signals change. Screening should capture that."
-          intro="A short recording captures a moment in time. Deep-ICD is designed to help clinicians explore changes across the day and identify patterns relevant to device suitability and the risk of unnecessary shocks."
+          intro="A short recording captures a moment in time. Deep-ICD is designed to help clinicians explore changes across the day and identify patterns relevant to device suitability and the risk of inappropriate shocks."
         />
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">

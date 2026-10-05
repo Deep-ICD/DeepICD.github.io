@@ -9,7 +9,7 @@ export default function Overview() {
     <section id="about">
       {/* Same container as every other section, so the left edges line up;
           the paragraph keeps its own max width for a readable line length. */}
-      <div className="mx-auto max-w-6xl px-6 py-28">
+      <div className="mx-auto max-w-6xl px-6 py-24">
         <span className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-brand">
           Overview
         </span>
