@@ -3,7 +3,7 @@ import Link from "next/link";
 import Eyebrow from "./components/Eyebrow";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import Overview from "./components/Overview";
+import ToolCarousel, { type ToolView } from "./components/ToolCarousel";
 import PublicationItem from "./components/PublicationItem";
 import {
   featuredPublications,
@@ -11,8 +11,6 @@ import {
 } from "./lib/publications";
 import {
   CONTACT_EMAIL,
-  LOGIN_URL,
-  focusRing,
   headerOffset,
   primaryButton,
   secondaryButton,
@@ -37,10 +35,10 @@ const benefits = [
    opens the next, which is what the step numbering encodes. Descriptions
    follow the platform team's own account of each screen.
 
-   The overview and the report span both columns; the two drill-down views sit
-   side by side between them. All four are light-themed platform output, so
-   each sits on its own white plate rather than straight on the dark surface. */
-const toolViews = [
+   Shown as a carousel (ToolCarousel). All four are light-themed platform
+   output, so each sits on its own white plate rather than straight on the
+   dark surface. */
+const toolViews: ToolView[] = [
   {
     step: "Overview",
     title: "The 24-hour timeline",
@@ -49,7 +47,6 @@ const toolViews = [
     src: "/images/tool/24-hour-timeline.webp",
     width: 2128,
     height: 1258,
-    wide: true,
     alt: "Deep-ICD's 24-hour overview for a test S-ICD recording: predicted T:R ratios in 10-second windows across the day for vectors A, B and C, with windows above the ratio of concern in red and noisy windows in orange.",
   },
   {
@@ -60,7 +57,6 @@ const toolViews = [
     src: "/images/tool/timeline-zoomed-in.webp",
     width: 1000,
     height: 536,
-    wide: false,
     alt: "The 24-hour overview with a second timeline beneath it, showing the chosen period from 04:45 to 05:00 in more detail.",
   },
   {
@@ -71,21 +67,17 @@ const toolViews = [
     src: "/images/tool/ecg-sample.webp",
     width: 1000,
     height: 545,
-    wide: false,
     alt: "A 10-second ECG sample for vectors A, B and C, from 04:55:21 to 04:55:30.",
   },
   {
     step: "Report",
-    title: "Predicted T:R distribution",
+    title: "Predicted T:R or P:R ratio distribution",
     caption:
-      "Clinicians can generate a PDF report, including how the predicted T:R ratios are distributed for each vector.",
-    /* Rendered from the vector content of the platform's own sample report
-       (public/report/), cropped to its distribution chart -- not redrawn. */
-    src: "/images/tool/report-tr-distribution.webp",
-    width: 2128,
-    height: 611,
-    wide: true,
-    alt: "Histograms of predicted T:R ratios for vectors A, B and C from a test recording, with the 1:3 ratio of concern marked by a vertical line and windows above it shown in red. Noisy windows: 11% for vector A, 0.37% for B and 0.41% for C.",
+      "Clinicians can generate a PDF report, including how the predicted T:R or P:R ratios are distributed for each vector.",
+    src: "/images/tool/Example T_R ratio distributions.png",
+    width: 1559,
+    height: 1225,
+    alt: "Example output from a test recording: predicted T:R ratios across 24 hours for vectors A, B and C, above histograms of their distribution with the 1:2 ratio of concern marked. Noisy windows: 0.11% for vector A, 0.068% for B and 0.056% for C.",
   },
 ];
 
@@ -322,7 +314,7 @@ function Hero() {
               Explore the tool
             </a>
             <a href="#contact" className={secondaryButton}>
-              Discuss a collaboration
+              Interested in testing Deep-ICD?
             </a>
           </div>
 
@@ -376,39 +368,7 @@ function Tool() {
           intro="Each view leads to the next, from the full recording down to the ECG behind a single prediction."
         />
 
-        <ol className="mt-12 grid gap-6 md:grid-cols-2">
-          {toolViews.map((view, i) => (
-            <li key={view.src} className={view.wide ? "md:col-span-2" : ""}>
-              <figure className="h-full rounded-xl bg-raised p-4 ring-1 ring-hairline sm:p-5">
-                <div className="overflow-hidden rounded-lg bg-white">
-                  <Image
-                    src={view.src}
-                    alt={view.alt}
-                    width={view.width}
-                    height={view.height}
-                    sizes={
-                      view.wide
-                        ? "(min-width: 1152px) 1064px, 100vw"
-                        : "(min-width: 768px) 50vw, 100vw"
-                    }
-                    className="h-auto w-full"
-                  />
-                </div>
-                <figcaption className="mt-5 px-1 pb-1">
-                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-brand">
-                    {String(i + 1).padStart(2, "0")} · {view.step}
-                  </p>
-                  <h3 className="mt-3 text-lg font-semibold leading-snug text-ink">
-                    {view.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-body">
-                    {view.caption}
-                  </p>
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ol>
+        <ToolCarousel views={toolViews} />
 
         {/* These views look clinical, so state plainly what they are. Wording
             follows the disclaimer printed on the platform's own reports. */}
@@ -450,6 +410,24 @@ function Approach() {
             </li>
           ))}
         </ol>
+
+        {/* Straight after the demo and the approach: the point where a
+            clinician is most likely to want to try it. Leads to the contact
+            section rather than a form. */}
+        <div className="mt-12 flex flex-col gap-6 rounded-xl bg-surface p-7 ring-1 ring-hairline md:flex-row md:items-center md:justify-between">
+          <div className="max-w-2xl">
+            <h3 className="text-lg font-semibold leading-snug text-ink">
+              Want to explore Deep-ICD in practice?
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-body">
+              If you are a clinician interested in testing the platform or
+              contributing to the research, we&apos;d love to hear from you.
+            </p>
+          </div>
+          <a href="#contact" className={`shrink-0 ${primaryButton}`}>
+            Register your interest
+          </a>
+        </div>
       </div>
     </section>
   );
@@ -632,32 +610,24 @@ function Contact() {
       <div className="mx-auto max-w-3xl px-6 py-24 text-center">
         <Eyebrow>Work with us</Eyebrow>
         <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-          Help shape the future of personalised ICD screening.
+          Interested in testing Deep-ICD?
         </h2>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-body">
-          Interested in exploring Deep-ICD, discussing the research, or
-          collaborating on grants and future studies? We welcome conversations
-          with clinicians and clinical teams, as well as mathematicians and AI
-          experts.
+          Are you a clinician interested in exploring Deep-ICD with your
+          patients or contributing to the research? Register your interest to
+          learn more and request access to the platform.
         </p>
 
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-          <a href={`mailto:${CONTACT_EMAIL}`} className={primaryButton}>
-            Contact the team
-          </a>
-          <a href={LOGIN_URL} className={secondaryButton}>
-            Log in to Deep-ICD
+          {/* The "Register your interest" buttons higher up lead here; this
+              one emails the team. The subject line tells them why at a glance. */}
+          <a
+            href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Registering interest in Deep-ICD")}`}
+            className={primaryButton}
+          >
+            Contact us
           </a>
         </div>
-
-        <p className="mt-6 text-sm">
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            className={`rounded-sm text-brand underline-offset-4 hover:underline ${focusRing}`}
-          >
-            {CONTACT_EMAIL}
-          </a>
-        </p>
       </div>
     </section>
   );
@@ -669,16 +639,13 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        {/* Not in the layout reference: kept by request, directly under the
-            hero, where it explains the method before the case for it. */}
-        <Overview />
         <WhyItMatters />
         <Tool />
         <Approach />
         <Publications />
         <Team />
-        <Partners />
         <Contact />
+        <Partners />
       </main>
       <Footer />
     </>
