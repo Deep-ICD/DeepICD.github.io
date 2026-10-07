@@ -214,6 +214,7 @@ const team: TeamMember[] = [
   {
     name: "Dr Alex Touze",
     initials: "AT",
+    photo: "/images/team/Alex Headshot.jpg",
     role: "Clinical Researcher",
     institution: "University Hospital Southampton",
   },
