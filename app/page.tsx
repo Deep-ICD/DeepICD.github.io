@@ -11,6 +11,7 @@ import {
 } from "./lib/publications";
 import {
   CONTACT_EMAIL,
+  LOGIN_URL,
   headerOffset,
   primaryButton,
   secondaryButton,
@@ -156,6 +157,21 @@ const team: TeamMember[] = [
     href: "https://www.southampton.ac.uk/people/5xd5hn/professor-alain-zemkoho",
   },
   {
+    name: "Dr Mohamed ElRefai",
+    initials: "ME",
+    photo: "/images/team/mohamed-elrefai.webp",
+    role: "Clinical Research Collaborator",
+    institution: "University Hospital Southampton",
+    href: "https://scholar.google.com/citations?user=wMl-xnUAAAAJ&hl=en",
+  },
+  {
+    name: "Dr Alex Touze",
+    initials: "AT",
+    photo: "/images/team/Alex Headshot.jpg",
+    role: "Clinical Researcher",
+    institution: "University Hospital Southampton",
+  },
+  {
     name: "Prof John Paisey",
     initials: "JP",
     photo: "/images/team/john-paisey.webp",
@@ -180,14 +196,6 @@ const team: TeamMember[] = [
     href: "https://www.linkedin.com/in/anthony-dunn-ab093a234/",
   },
   {
-    name: "Dr Mohamed ElRefai",
-    initials: "ME",
-    photo: "/images/team/mohamed-elrefai.webp",
-    role: "Clinical Research Collaborator",
-    institution: "University Hospital Southampton",
-    href: "https://scholar.google.com/citations?user=wMl-xnUAAAAJ&hl=en",
-  },
-  {
     name: "Samuel Ward",
     initials: "SW",
     photo: "/images/team/samuel-ward.webp",
@@ -210,13 +218,6 @@ const team: TeamMember[] = [
     role: "Doctoral Researcher",
     institution: "University of Southampton",
     href: "https://www.linkedin.com/in/bartosz-morawski-b21abb214",
-  },
-  {
-    name: "Dr Alex Touze",
-    initials: "AT",
-    photo: "/images/team/Alex Headshot.jpg",
-    role: "Clinical Researcher",
-    institution: "University Hospital Southampton",
   },
   {
     name: "Dr Sam Mangham",
@@ -490,7 +491,7 @@ function TeamCard({ member }: { member: TeamMember }) {
           src={member.photo}
           alt=""
           fill
-          sizes="(min-width: 1152px) 264px, (min-width: 1024px) 25vw, 50vw"
+          sizes="(min-width: 1152px) 352px, (min-width: 640px) 33vw, 50vw"
           style={{ objectPosition: member.objectPosition ?? "50% 25%" }}
           className="object-cover"
         />
@@ -540,10 +541,9 @@ function Team() {
         />
 
         {/* Square frames: most source portraits are already 1:1, so this crops
-            almost nothing. Four columns from lg; two below that keeps ten
-            portraits from becoming a single column of full-width faces on a
-            phone. */}
-        <div className="mt-14 grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
+            almost nothing. Full section width, so the row's edges line up with
+            every other section: three columns from sm, two on phones. */}
+        <div className="mt-14 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
           {team.map((member) => (
             <TeamCard key={member.name} member={member} />
           ))}
@@ -627,6 +627,15 @@ function Contact() {
             className={primaryButton}
           >
             Contact us
+          </a>
+          <a
+            href={LOGIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={secondaryButton}
+          >
+            Log in to Deep-ICD
+            <span className="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
       </div>

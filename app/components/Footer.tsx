@@ -20,7 +20,7 @@ export default function Footer() {
         </div>
 
         <p className="text-xs text-body">
-          Research platform · &copy; {new Date().getFullYear()} Deep-ICD
+          &copy; {new Date().getFullYear()} Deep-ICD
         </p>
       </div>
     </footer>

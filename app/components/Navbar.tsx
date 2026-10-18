@@ -3,7 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { LOGO, focusRing, navLinks } from "../lib/site";
+import {
+  LOGIN_URL,
+  LOGO,
+  focusRing,
+  navLinks,
+  secondaryButton,
+} from "../lib/site";
 
 /* Fixed to the top so the section links stay reachable down the whole page.
    Over the hero it is transparent, so the artwork shows through; once the
@@ -42,8 +48,8 @@ export default function Navbar() {
             : "border-transparent"
         }`}
       >
-        {/* One row from md: logo left, section links on the right. Below md
-            the links take a second row under the logo, kept
+        {/* One row from md: logo left, section links then Log in on the
+            right. Below md the links take a second row under the logo, kept
             to a single line that scrolls sideways rather than wrapping, so the
             bar never grows past two rows. */}
         <div
@@ -86,6 +92,16 @@ export default function Navbar() {
               ))}
             </ul>
           </nav>
+
+          <a
+            href={LOGIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`order-2 md:order-3 ${secondaryButton}`}
+          >
+            Log in
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
         </div>
       </header>
     </>

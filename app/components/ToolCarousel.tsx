@@ -21,7 +21,14 @@ export type ToolView = {
    advance on its own: the views are a sequence (each one opens the next), and
    the captions need to hold still while they are read. */
 export default function ToolCarousel({ views }: { views: ToolView[] }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start" });
+  /* containScroll off: with slides under half the width, Embla's default
+     trims the last snap points together, so steps 03 and 04 would share a
+     position. Off, every slide gets its own stop (the last one leaves space
+     to its right). */
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    containScroll: false,
+  });
 
   /* Starts at the first slide, which is where Embla initialises. State only
      changes in Embla's own callbacks, never synchronously in the effect. */
@@ -65,14 +72,11 @@ export default function ToolCarousel({ views }: { views: ToolView[] }) {
       aria-roledescription="carousel"
       aria-label="How the tool is used"
       onKeyDownCapture={onKeyDown}
-      /* 90% of the section width from md, which shrinks every slide by the
-         same 10% while keeping the 55% slide ratio (and its snap points). */
-      className="mt-12 md:max-w-[90%]"
+      className="mt-12"
     >
-      {/* Slides are 55% wide from md, so the next one shows nearly half its
-          width -- the visible cue that there is more to swipe to. Not much
-          narrower: under ~50%, Embla trims the last snap points together and
-          the 01-04 step buttons would stop mapping one-to-one to slides. */}
+      {/* Slides are just under half the width from md, so the next one shows
+          almost in full -- the visible cue that there is more to swipe to.
+          The carousel spans the full section width like everything else. */}
       <div ref={emblaRef} className="overflow-hidden">
         <div className="-ml-6 flex touch-pan-y">
           {views.map((view, i) => (
@@ -81,7 +85,7 @@ export default function ToolCarousel({ views }: { views: ToolView[] }) {
               role="group"
               aria-roledescription="slide"
               aria-label={`${i + 1} of ${views.length}`}
-              className="min-w-0 shrink-0 grow-0 basis-full pl-6 md:basis-[55%]"
+              className="min-w-0 shrink-0 grow-0 basis-full pl-6 md:basis-[49.5%]"
             >
               <figure className="flex h-full flex-col rounded-xl bg-raised p-4 ring-1 ring-hairline sm:p-5">
                 {/* A shared 16:10 plate, so slides of different aspect ratios
