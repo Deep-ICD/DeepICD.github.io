@@ -157,22 +157,7 @@ const team: TeamMember[] = [
     href: "https://www.southampton.ac.uk/people/5xd5hn/professor-alain-zemkoho",
   },
   {
-    name: "Dr Mohamed ElRefai",
-    initials: "ME",
-    photo: "/images/team/mohamed-elrefai.webp",
-    role: "Clinical Research Collaborator",
-    institution: "University Hospital Southampton",
-    href: "https://scholar.google.com/citations?user=wMl-xnUAAAAJ&hl=en",
-  },
-  {
-    name: "Dr Alex Touze",
-    initials: "AT",
-    photo: "/images/team/Alex Headshot.jpg",
-    role: "Clinical Researcher",
-    institution: "University Hospital Southampton",
-  },
-  {
-    name: "Prof John Paisey",
+    name: "Dr John Paisey",
     initials: "JP",
     photo: "/images/team/john-paisey.webp",
     role: "Clinical Lead",
@@ -194,6 +179,14 @@ const team: TeamMember[] = [
     role: "Research Collaborator",
     institution: "University of Southampton",
     href: "https://www.linkedin.com/in/anthony-dunn-ab093a234/",
+  },
+  {
+    name: "Dr Mohamed ElRefai",
+    initials: "ME",
+    photo: "/images/team/mohamed-elrefai.webp",
+    role: "Clinical Research Collaborator",
+    institution: "University Hospital Southampton",
+    href: "https://scholar.google.com/citations?user=wMl-xnUAAAAJ&hl=en",
   },
   {
     name: "Samuel Ward",
@@ -218,6 +211,13 @@ const team: TeamMember[] = [
     role: "Doctoral Researcher",
     institution: "University of Southampton",
     href: "https://www.linkedin.com/in/bartosz-morawski-b21abb214",
+  },
+  {
+    name: "Dr Alex Touze",
+    initials: "AT",
+    photo: "/images/team/Alex Headshot.jpg",
+    role: "Clinical Researcher",
+    institution: "University Hospital Southampton",
   },
   {
     name: "Dr Sam Mangham",
