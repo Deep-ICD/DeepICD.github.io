@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   LOGIN_URL,
@@ -16,7 +17,36 @@ import {
    Over the hero it is transparent, so the artwork shows through; once the
    page scrolls it compacts (smaller logo, tighter padding) and gains a
    blurred surface so it stays legible over whatever passes beneath. */
+/* On the homepage, section links are plain "#id" anchors the browser scrolls
+   to itself. Going through next/link there ("/#id") routes a same-page jump
+   through the client router, which fails silently under a basePath on a
+   static host. From any other page (/publications), next/link navigates back
+   to the homepage section as normal. */
+function SectionLink({
+  href,
+  onHome,
+  className,
+  children,
+}: {
+  href: string;
+  onHome: boolean;
+  className: string;
+  children: React.ReactNode;
+}) {
+  return onHome ? (
+    <a href={href.replace(/^\//, "")} className={className}>
+      {children}
+    </a>
+  ) : (
+    <Link href={href} className={className}>
+      {children}
+    </Link>
+  );
+}
+
 export default function Navbar() {
+  /* usePathname excludes the basePath, so the homepage is "/" everywhere. */
+  const onHome = usePathname() === "/";
   const sentinelRef = useRef<HTMLDivElement>(null);
   const [compact, setCompact] = useState(false);
 
@@ -58,8 +88,9 @@ export default function Navbar() {
             compact ? "gap-y-2 py-3" : "gap-y-4 py-6"
           }`}
         >
-          <Link
+          <SectionLink
             href="/#top"
+            onHome={onHome}
             className={`order-1 shrink-0 rounded-md ${focusRing}`}
           >
             <Image
@@ -72,7 +103,7 @@ export default function Navbar() {
                 compact ? "h-10" : "h-16 sm:h-20"
               }`}
             />
-          </Link>
+          </SectionLink>
 
           <nav
             aria-label="Primary"
@@ -83,12 +114,13 @@ export default function Navbar() {
             <ul className="-mx-6 flex gap-x-7 overflow-x-auto whitespace-nowrap px-6 py-1 text-sm font-medium md:mx-0 md:overflow-visible md:px-0">
               {navLinks.map((link) => (
                 <li key={link.href}>
-                  <Link
+                  <SectionLink
                     href={link.href}
+                    onHome={onHome}
                     className={`rounded-sm text-body transition-colors hover:text-ink ${focusRing}`}
                   >
                     {link.label}
-                  </Link>
+                  </SectionLink>
                 </li>
               ))}
             </ul>
