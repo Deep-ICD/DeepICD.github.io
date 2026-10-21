@@ -157,7 +157,7 @@ const team: TeamMember[] = [
     href: "https://www.southampton.ac.uk/people/5xd5hn/professor-alain-zemkoho",
   },
   {
-    name: "Dr John Paisey",
+    name: "Prof John Paisey",
     initials: "JP",
     photo: "/images/team/john-paisey.webp",
     role: "Clinical Lead",
