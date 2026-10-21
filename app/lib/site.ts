@@ -1,5 +1,15 @@
 /* Values shared by the server-rendered page and the client-side Navbar. */
 
+/* The URL prefix the site is served under, set at build time by the deploy
+   workflow from GitHub Pages: "" on deep-icd.org (served from the root),
+   "/deep-icd" on a project URL such as username.github.io/deep-icd.
+   NEXT_PUBLIC_ so client components (Navbar, ToolCarousel) can read it. */
+export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+/* next.config's basePath prefixes links, but not next/image string sources,
+   so every public/ asset path goes through this. */
+export const asset = (path: string) => `${basePath}${path}`;
+
 export const LOGIN_URL = "https://deep-icd.soton.ac.uk/accounts/login/";
 export const CONTACT_EMAIL = "deep-icd@soton.ac.uk";
 export const LOGO = "/images/logo-deep-icd-light.webp";

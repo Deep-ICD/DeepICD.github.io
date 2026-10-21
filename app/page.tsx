@@ -11,6 +11,7 @@ import {
 } from "./lib/publications";
 import {
   CONTACT_EMAIL,
+  asset,
   LOGIN_URL,
   headerOffset,
   primaryButton,
@@ -263,7 +264,7 @@ function Hero() {
           the artwork. */}
       <div className="absolute inset-y-0 right-0 w-full max-w-[1920px]">
         <Image
-          src="/images/hero-ecg.webp"
+          src={asset("/images/hero-ecg.webp")}
           alt=""
           fill
           preload
@@ -488,7 +489,7 @@ function TeamCard({ member }: { member: TeamMember }) {
 
       {member.photo && (
         <Image
-          src={member.photo}
+          src={asset(member.photo)}
           alt=""
           fill
           sizes="(min-width: 1152px) 352px, (min-width: 640px) 33vw, 50vw"
@@ -591,7 +592,7 @@ function Partners() {
               className="transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-8 focus-visible:ring-offset-deep"
             >
               <Image
-                src={partner.src}
+                src={asset(partner.src)}
                 alt={partner.name}
                 width={partner.width}
                 height={partner.height}

@@ -2,9 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* Deployed as static files to GitHub Pages (deep-icd.org), which has no
-     Node server. `next build` writes the site to out/. The custom domain
-     serves from the root, so no basePath is needed. */
+     Node server. `next build` writes the site to out/. */
   output: "export",
+
+  /* "" on deep-icd.org; "/repo-name" when served from a GitHub project URL.
+     Set by the deploy workflow -- see `basePath` in app/lib/site.ts. */
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? "",
 
   /* Emit /publications/index.html rather than /publications.html, the form
      every static host resolves without extra configuration. */

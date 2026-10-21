@@ -4,7 +4,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import { focusRing } from "../lib/site";
+import { asset, focusRing } from "../lib/site";
 
 export type ToolView = {
   step: string;
@@ -92,7 +92,7 @@ export default function ToolCarousel({ views }: { views: ToolView[] }) {
                     line up; each screenshot is fitted whole inside it. */}
                 <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-white">
                   <Image
-                    src={view.src}
+                    src={asset(view.src)}
                     alt={view.alt}
                     fill
                     sizes="(min-width: 1152px) 550px, (min-width: 768px) 50vw, 100vw"

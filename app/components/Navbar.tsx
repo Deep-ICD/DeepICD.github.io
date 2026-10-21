@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   LOGIN_URL,
   LOGO,
+  asset,
   focusRing,
   navLinks,
   secondaryButton,
@@ -62,7 +63,7 @@ export default function Navbar() {
             className={`order-1 shrink-0 rounded-md ${focusRing}`}
           >
             <Image
-              src={LOGO}
+              src={asset(LOGO)}
               alt="Deep-ICD"
               width={640}
               height={165}

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { LOGO } from "../lib/site";
+import { LOGO, asset } from "../lib/site";
 
 export default function Footer() {
   return (
@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 sm:flex-row sm:items-end sm:justify-between">
         <div className="max-w-sm">
           <Image
-            src={LOGO}
+            src={asset(LOGO)}
             alt="Deep-ICD"
             width={640}
             height={165}
