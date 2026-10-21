@@ -41,7 +41,7 @@ jobs:
             exit 0
           elif [ -f "${{ github.workspace }}/package.json" ]; then
             echo "manager=npm" >> $GITHUB_OUTPUT
-            # FIX: "install" instead of "ci". The lockfile made on macOS omits
+            # "install" instead of "ci": the lockfile made on macOS omits
             # Linux-only optional packages (@emnapi/*), which makes "npm ci" fail.
             echo "command=install" >> $GITHUB_OUTPUT
             echo "runner=npx --no-install" >> $GITHUB_OUTPUT
@@ -53,14 +53,12 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          # FIX: match the local Node version (24), so npm behaves the same way.
           node-version: "24"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Setup Pages
+        # The id lets the build step read this step's base_path output.
+        id: pages
         uses: actions/configure-pages@v5
-        # FIX: removed "static_site_generator: next". next.config.ts already
-        # sets output: "export" and images.unoptimized, and the injection only
-        # supports .js/.mjs config files.
       - name: Restore cache
         uses: actions/cache@v4
         with:
@@ -75,6 +73,10 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        env:
+          # The URL prefix the site is served under: "/deep-icd" on a project
+          # URL like username.github.io/deep-icd, empty on a custom domain.
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
