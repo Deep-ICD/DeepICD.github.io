@@ -57,6 +57,8 @@ jobs:
           node-version: "24"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Setup Pages
+        # The id lets the build step read this step's base_path output.
+        id: pages
         uses: actions/configure-pages@v5
         # FIX: removed "static_site_generator: next". next.config.ts already
         # sets output: "export" and images.unoptimized, and the injection only
@@ -75,6 +77,10 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        env:
+          # The URL prefix the site is served under: "/deep-icd" on a project
+          # URL like username.github.io/deep-icd, empty on a custom domain.
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
